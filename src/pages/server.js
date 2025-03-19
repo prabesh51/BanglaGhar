@@ -6,7 +6,7 @@ const app = express();
 
 // AWS Configuration
 AWS.config.update({
-  region: 'us-east-1', // Update with your region
+  region: 'ap-southeast-2', // Update with your region
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });

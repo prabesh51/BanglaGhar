@@ -137,7 +137,7 @@ const Signup = () => {
           </StyledButton>
           
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-            Already have an account? <Link to="/login">Sign In</Link>
+            Already have an account? <Link to="/Login">Sign In</Link>
           </Typography>
         </Box>
       </SignupPaper>

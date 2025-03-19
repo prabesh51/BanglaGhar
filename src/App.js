@@ -10,6 +10,7 @@ import Sold from './pages/Sold';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
 import Login from './pages/Login'; // Import the Login component
+import Signup from './pages/Signup'; // Import the Signup component
 import ListProperty from './pages/ListProperty'; // Import the ListProperty component
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -59,8 +60,9 @@ function App() {
                 <Route path="/properties/sold" element={<Sold />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login />} /> {/* Added Login route */}
-                <Route path="/list-property" element={<ListProperty />} /> {/* Added ListProperty route */}
+                <Route path="/login" element={<Login />} /> {/* Login route already present */}
+                <Route path="/signup" element={<Signup />} /> {/* Added Signup route */}
+                <Route path="/list-property" element={<ListProperty />} /> {/* ListProperty route */}
                 {/* Add routes for other pages as they are created */}
                 {/*
                   <Route path="/properties" element={<Properties />} />
