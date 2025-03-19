@@ -12,10 +12,9 @@ import {
   Avatar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useAuth } from './AuthContext';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-const LoginPaper = styled(Paper)(({ theme }) => ({
+const SignupPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: '#FFFFFF',
   boxShadow: '0 8px 24px rgba(43, 123, 140, 0.12)',
   borderRadius: '16px',
@@ -48,22 +47,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:3001/api/login', {
+      const response = await fetch('http://localhost:3001/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password, email })
       });
       
       const data = await response.json();
@@ -72,10 +71,9 @@ const Login = () => {
         throw new Error(data.error);
       }
       
-      login(username);
       setOpenSnackbar(true);
       setTimeout(() => {
-        navigate('/');
+        navigate('/login');
       }, 1500);
     } catch (err) {
       setError(err.message);
@@ -84,13 +82,13 @@ const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ py: 8 }}>
-      <LoginPaper>
+      <SignupPaper>
         <StyledAvatar>
-          <LockOutlinedIcon fontSize="large" />
+          <PersonAddIcon fontSize="large" />
         </StyledAvatar>
         
         <Typography component="h1" variant="h4" sx={{ mb: 3, fontWeight: 700, color: '#2B7B8C' }}>
-          Sign In
+          Sign Up
         </Typography>
         
         {error && (
@@ -99,7 +97,7 @@ const Login = () => {
           </Alert>
         )}
         
-        <Box component="form" onSubmit={handleLogin} sx={{ width: '100%' }}>
+        <Box component="form" onSubmit={handleSignup} sx={{ width: '100%' }}>
           <TextField
             margin="normal"
             required
@@ -108,6 +106,17 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoFocus
+            variant="outlined"
+            sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
             sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
           />
@@ -124,22 +133,22 @@ const Login = () => {
           />
           
           <StyledButton type="submit" fullWidth variant="contained">
-            Sign In
+            Sign Up
           </StyledButton>
           
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+            Already have an account? <Link to="/login">Sign In</Link>
           </Typography>
         </Box>
-      </LoginPaper>
+      </SignupPaper>
       
       <Snackbar open={openSnackbar} autoHideDuration={1500}>
         <Alert severity="success">
-          Login successful! Redirecting to home page...
+          Signup successful! Redirecting to login...
         </Alert>
       </Snackbar>
     </Container>
   );
 };
 
-export default Login;
+export default Signup;
