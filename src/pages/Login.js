@@ -128,7 +128,7 @@ const Login = () => {
           </StyledButton>
           
           <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+            Don't have an account? <Link to="/Signup">Sign Up</Link>
           </Typography>
         </Box>
       </LoginPaper>
