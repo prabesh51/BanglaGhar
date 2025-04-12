@@ -9,6 +9,9 @@ const openai = new OpenAI({
 const generatePropertyDescription = async (req, res) => {
     try {
         const property = req.body.propertyData;
+
+        // Log the received property data for debugging
+        console.log("Received property data:", JSON.stringify(property, null, 2));
         
         const prompt = `You are a professional real estate agent. Generate a compelling 150-200 word description for a commercial property with these details:
         
@@ -16,10 +19,14 @@ const generatePropertyDescription = async (req, res) => {
         Property Type: ${property.propertyType}
         Listing Type: For ${property.listingType}
         Price: ${property.price} BDT
-        Location: ${property.address}, ${property.city}, ${property.state}
+        Location: ${property.address}, ${property.city}, ${property.division} ${property.postcode}
         Size: ${property.area} square feet
+        Street Width: ${property.streetWidth} feet (${property.streetWidthComment || "No additional comments"})
         Bedrooms: ${property.bedrooms}
         Bathrooms: ${property.bathrooms}
+        Fresh Water Supply: ${property.freshWaterSupply} hours per day (${property.freshWaterSupplyComment || "No additional comments"})
+        Gas Supply: ${property.gasSupply} (${property.gasSupplyComment || "No additional comments"})
+        Lift Availability: ${property.hasLift ? "Yes" : "No"} (${property.hasLiftComment || "No additional comments"})
         
         Key Features:
         ${property.features.parking ? "- Ample parking space" : ""}
@@ -29,10 +36,9 @@ const generatePropertyDescription = async (req, res) => {
         ${property.features.pool ? "- Swimming pool" : ""}
         
         Nearby Amenities:
-        ${property.nearbyAmenities.institutions === "Yes" ? "- Close to institutions" : ""}
+        ${property.nearbyAmenities.educationalInstitutions === "Yes" ? "- Close to educational institutions" : ""}
         ${property.nearbyAmenities.hospital === "Yes" ? "- Nearby hospital" : ""}
         ${property.nearbyAmenities.market === "Yes" ? "- Nearby market" : ""}
-        ${property.nearbyAmenities.park === "Yes" ? "- Nearby park" : ""}
         
         Additional Keywords: ${property.descriptionKeywords || "None"}
         
@@ -48,6 +54,7 @@ const generatePropertyDescription = async (req, res) => {
 
         res.json({ description: completion.choices[0].message.content });
     } catch (error) {
+        console.error("Error generating property description:", error.message);
         res.status(500).json({ error: "Failed to generate property description", details: error.message });
     }
 };
