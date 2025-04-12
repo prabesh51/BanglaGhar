@@ -146,7 +146,15 @@ const ListProperty = () => {
     },
     description: "",
     photos: [],
+    nearbyAmenities: {
+      educationalInstitutions: "N/A", // Renamed from institutions
+      hospital: "N/A",
+      market: "N/A",
+    },
   });
+
+  const [banglaDescription, setBanglaDescription] = useState(""); // State for Bangla description
+  const [useBanglaDescription, setUseBanglaDescription] = useState(false); // Toggle for description language
 
   // Form validation errors
   const [errors, setErrors] = useState({});
@@ -173,6 +181,8 @@ const ListProperty = () => {
               bathrooms: formData.bathrooms,
               area: formData.area,
               features: formData.features,
+              nearbyAmenities: formData.nearbyAmenities,
+              descriptionKeywords: formData.description, // Include manual description as keywords
             },
           }),
         }
@@ -194,6 +204,29 @@ const ListProperty = () => {
       setIsGenerating(false);
     }
   };
+
+  // Function to translate description into Bangla
+  const translateToBangla = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/translate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: aiGeneratedDescription }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to translate description");
+      }
+
+      const data = await response.json();
+      setBanglaDescription(data.translatedText);
+    } catch (error) {
+      console.error("Error translating description:", error);
+    }
+  };
+
   // Redirect if not logged in
   useEffect(() => {
     if (!isLoggedIn) {
@@ -225,6 +258,17 @@ const ListProperty = () => {
       features: {
         ...formData.features,
         [feature]: !formData.features[feature],
+      },
+    });
+  };
+
+  // Handle nearby amenities changes
+  const handleNearbyAmenityChange = (amenity, value) => {
+    setFormData({
+      ...formData,
+      nearbyAmenities: {
+        ...formData.nearbyAmenities,
+        [amenity]: value ? "Yes" : "N/A",
       },
     });
   };
@@ -740,9 +784,56 @@ const ListProperty = () => {
       case 2:
         return (
           <Grid container spacing={3}>
+            {/* Nearby amenities questions */}
             <Grid item xs={12}>
-              {renderImageUpload()}
+              <SectionTitle variant="h6">Nearby Amenities</SectionTitle>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.nearbyAmenities.educationalInstitutions === "Yes"}
+                        onChange={(e) =>
+                          handleNearbyAmenityChange("educationalInstitutions", e.target.checked)
+                        }
+                        color="primary"
+                      />
+                    }
+                    label="Nearby Educational Institutions"
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.nearbyAmenities.hospital === "Yes"}
+                        onChange={(e) =>
+                          handleNearbyAmenityChange("hospital", e.target.checked)
+                        }
+                        color="primary"
+                      />
+                    }
+                    label="Nearby Hospital"
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.nearbyAmenities.market === "Yes"}
+                        onChange={(e) =>
+                          handleNearbyAmenityChange("market", e.target.checked)
+                        }
+                        color="primary"
+                      />
+                    }
+                    label="Nearby Market"
+                  />
+                </Grid>
+              </Grid>
             </Grid>
+
+            {/* Generate with AI description box */}
             <Grid item xs={12}>
               <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
                 <StyledButton
@@ -802,6 +893,46 @@ const ListProperty = () => {
                 </Box>
               )}
             </Grid>
+
+            {/* Translate to Bangla */}
+            {aiGeneratedDescription && (
+              <Grid item xs={12}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <StyledButton
+                    variant="outlined"
+                    onClick={translateToBangla}
+                    disabled={!aiGeneratedDescription}
+                    sx={{ mb: 1 }}
+                  >
+                    Translate to Bangla
+                  </StyledButton>
+                  {banglaDescription && (
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={useBanglaDescription}
+                          onChange={(e) => setUseBanglaDescription(e.target.checked)}
+                          color="primary"
+                        />
+                      }
+                      label="Use Bangla Description"
+                    />
+                  )}
+                </Box>
+              </Grid>
+            )}
+
+            {/* Display Bangla description */}
+            {banglaDescription && (
+              <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                  Bangla Description:
+                </Typography>
+                <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+                  {banglaDescription}
+                </Typography>
+              </Grid>
+            )}
             {formData.title && formData.price && (
               <Grid item xs={12}>
                 <SectionTitle variant="h6">Preview</SectionTitle>
