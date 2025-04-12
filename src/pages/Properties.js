@@ -623,7 +623,7 @@ const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
         <Button onClick={onClose}>Close</Button>
         <Button variant="contained" color="primary">
           {mode === "buy"
-            ? "Contact Agent"
+            ? "Contact Advertiser"
             : mode === "rent"
             ? "Schedule Viewing"
             : "See Similar Properties"}
