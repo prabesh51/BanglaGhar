@@ -29,18 +29,16 @@ const generatePropertyDescription = async (req, res) => {
         Lift Availability: ${property.hasLift ? "Yes" : "No"} (${property.hasLiftComment || "No additional comments"})
         
         Key Features:
-        ${property.features.parking ? "- Ample parking space" : ""}
-        ${property.features.garden ? "- Beautiful garden area" : ""}
-        ${property.features.airConditioning ? "- Fully air-conditioned" : ""}
-        ${property.features.furnished ? "- Fully furnished" : ""}
-        ${property.features.pool ? "- Swimming pool" : ""}
+        ${property.features.parking ? `- Parking: ${property.features.parkingComment || "No additional comments"}` : ""}
+        ${property.features.garden ? `- Garden: ${property.features.gardenComment || "No additional comments"}` : ""}
+        ${property.features.airConditioning ? `- Air Conditioning: ${property.features.airConditioningComment || "No additional comments"}` : ""}
+        ${property.features.furnished ? `- Furnished: ${property.features.furnishedComment || "No additional comments"}` : ""}
+        ${property.features.pool ? `- Swimming Pool: ${property.features.poolComment || "No additional comments"}` : ""}
         
         Nearby Amenities:
-        ${property.nearbyAmenities.educationalInstitutions === "Yes" ? "- Close to educational institutions" : ""}
-        ${property.nearbyAmenities.hospital === "Yes" ? "- Nearby hospital" : ""}
-        ${property.nearbyAmenities.market === "Yes" ? "- Nearby market" : ""}
-        
-        Additional Keywords: ${property.descriptionKeywords || "None"}
+        ${property.nearbyAmenities.educationalInstitutions === "Yes" ? `- Educational Institutions: ${property.nearbyAmenities.educationalInstitutionsComment || "No additional comments"}` : ""}
+        ${property.nearbyAmenities.hospital === "Yes" ? `- Hospital: ${property.nearbyAmenities.hospitalComment || "No additional comments"}` : ""}
+        ${property.nearbyAmenities.market === "Yes" ? `- Market: ${property.nearbyAmenities.marketComment || "No additional comments"}` : ""}
         
         Write an engaging description that highlights the property's best features, location advantages, and potential uses. Use persuasive language suitable for a high-value commercial property listing. Mention any unique selling points and the business potential of the location.`;
 
