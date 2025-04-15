@@ -1,5 +1,5 @@
 // src/pages/Properties.js
-
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -164,6 +164,7 @@ const PropertyCard = ({
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   // Get appropriate image for property
   const getPropertyImage = () => {
@@ -282,8 +283,15 @@ const PropertyCard = ({
       </Box>
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h6" gutterBottom noWrap>
-          {property.title}
+          {property.title.includes("Rent Listing")
+            ? `${t("rent_listing")} #${property.title.split("#")[1]}`
+            : property.title.includes("Buy Listing")
+            ? `${t("buy_listing")} #${property.title.split("#")[1]}`
+            : property.title.includes("Sold Listing")
+            ? `${t("sold_listing")} #${property.title.split("#")[1]}`
+            : property.title}
         </Typography>
+
         <Typography variant="body2" color="text.secondary" noWrap>
           {property.location}
         </Typography>
@@ -331,8 +339,9 @@ const PropertyCard = ({
               }
             }}
           >
-            View Details
+            {t("view_details")}
           </Button>
+
           <IconButton
             color={isWishlisted ? "error" : "default"}
             onClick={handleWishlistClick}
@@ -364,6 +373,7 @@ const PropertyFilters = ({
   onResetFilters,
   isMobile,
 }) => {
+  const { t } = useTranslation();
   const [showFilters, setShowFilters] = useState(!isMobile);
 
   return (
@@ -409,7 +419,7 @@ const PropertyFilters = ({
         >
           {/* Fuzzy search text input */}
           <TextField
-            label="Search (title or location)"
+            label={t("search_placeholder")}
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -419,15 +429,15 @@ const PropertyFilters = ({
 
           {/* Property Type Filter */}
           <FormControl size="small" sx={{ width: isMobile ? "100%" : 150 }}>
-            <InputLabel>Property Type</InputLabel>
+            <InputLabel>{t("property_type")}</InputLabel>
             <Select
               label="Property Type"
               value={propertyTypeFilter}
               onChange={(e) => setPropertyTypeFilter(e.target.value)}
             >
-              <MenuItem value="all">All Types</MenuItem>
-              <MenuItem value="other">Buildings</MenuItem>
-              <MenuItem value="land">Land Only</MenuItem>
+              <MenuItem value="">{t("all_types")}</MenuItem>
+              <MenuItem value="building">{t("buildings")}</MenuItem>
+              <MenuItem value="land">{t("land_only")}</MenuItem>
             </Select>
           </FormControl>
 
@@ -436,34 +446,35 @@ const PropertyFilters = ({
             <>
               {/* Bedrooms */}
               <FormControl size="small" sx={{ width: isMobile ? "100%" : 120 }}>
-                <InputLabel>Bedrooms</InputLabel>
+                <InputLabel>{t("bedrooms")}</InputLabel>
                 <Select
                   label="Bedrooms"
                   value={bedroomFilter}
                   onChange={(e) => setBedroomFilter(Number(e.target.value))}
                 >
-                  <MenuItem value={0}>Any</MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5+</MenuItem>
+                  <MenuItem value="">{t("any")}</MenuItem>
+                  <MenuItem value="1">{t("num_1")}</MenuItem>
+                  <MenuItem value="2">{t("num_2")}</MenuItem>
+                  <MenuItem value="3">{t("num_3")}</MenuItem>
+                  <MenuItem value="4">{t("num_4")}</MenuItem>
+                  <MenuItem value="5+">{t("num_5_plus")}</MenuItem>
                 </Select>
               </FormControl>
 
               {/* Bathrooms */}
               <FormControl size="small" sx={{ width: isMobile ? "100%" : 120 }}>
-                <InputLabel>Bathrooms</InputLabel>
+                <InputLabel>{t("bathrooms")}</InputLabel>
                 <Select
                   label="Bathrooms"
                   value={bathroomFilter}
                   onChange={(e) => setBathroomFilter(Number(e.target.value))}
                 >
-                  <MenuItem value={0}>Any</MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4+</MenuItem>
+                  <MenuItem value="">{t("any")}</MenuItem>
+                  <MenuItem value="1">{t("num_1")}</MenuItem>
+                  <MenuItem value="2">{t("num_2")}</MenuItem>
+                  <MenuItem value="3">{t("num_3")}</MenuItem>
+                  <MenuItem value="4">{t("num_4")}</MenuItem>
+                  <MenuItem value="5+">{t("num_5_plus")}</MenuItem>
                 </Select>
               </FormControl>
             </>
@@ -472,7 +483,7 @@ const PropertyFilters = ({
           {/* Price Slider */}
           <Box sx={{ width: isMobile ? "100%" : 200 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
-              Max Price: {formatPrice(priceRange[1], mode)}
+              {t("max_price")}: {formatPrice(priceRange[1], mode)}
             </Typography>
             <Slider
               value={priceRange}
@@ -486,24 +497,22 @@ const PropertyFilters = ({
 
           {/* Sort By Dropdown */}
           <FormControl size="small" sx={{ width: isMobile ? "100%" : 180 }}>
-            <InputLabel>Sort By</InputLabel>
+            <InputLabel>{t("sort_by")}</InputLabel>
             <Select
               label="Sort By"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               startAdornment={<SortIcon sx={{ ml: 1, mr: 1, color: "gray" }} />}
             >
-              <MenuItem value="recommended">Recommended</MenuItem>
-              <MenuItem value="priceAsc">Price (Low to High)</MenuItem>
-              <MenuItem value="priceDesc">Price (High to Low)</MenuItem>
-              {propertyTypeFilter !== "land" && (
-                <MenuItem value="bedroomsAsc">Bedrooms (Few to Many)</MenuItem>
-              )}
-              {propertyTypeFilter !== "land" && (
-                <MenuItem value="bedroomsDesc">Bedrooms (Many to Few)</MenuItem>
-              )}
-              <MenuItem value="areaAsc">Area (Small to Large)</MenuItem>
-              <MenuItem value="areaDesc">Area (Large to Small)</MenuItem>
+              <MenuItem value="recommended">{t("sort_recommended")}</MenuItem>
+              <MenuItem value="priceAsc">{t("sort_price_asc")}</MenuItem>
+              <MenuItem value="priceDesc">{t("sort_price_desc")}</MenuItem>
+              <MenuItem value="bedroomsAsc">{t("sort_bedrooms_asc")}</MenuItem>
+              <MenuItem value="bedroomsDesc">
+                {t("sort_bedrooms_desc")}
+              </MenuItem>
+              <MenuItem value="areaAsc">{t("sort_area_asc")}</MenuItem>
+              <MenuItem value="areaDesc">{t("sort_area_desc")}</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -514,6 +523,7 @@ const PropertyFilters = ({
 
 // Simple Property Details Dialog
 const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -549,7 +559,15 @@ const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6">{property.title}</Typography>
+        <Typography variant="h6">
+          {property?.title?.includes("Rent Listing")
+            ? `${t("rent_listing")} #${property.title.split("#")[1]}`
+            : property?.title?.includes("Buy Listing")
+            ? `${t("buy_listing")} #${property.title.split("#")[1]}`
+            : property?.title?.includes("Sold Listing")
+            ? `${t("sold_listing")} #${property.title.split("#")[1]}`
+            : property?.title}
+        </Typography>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
@@ -606,8 +624,9 @@ const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
 
           {/* Description */}
           <Typography variant="h6" gutterBottom>
-            Description
+            {t("description")}
           </Typography>
+
           <Typography variant="body1" paragraph>
             {property.description}
           </Typography>
@@ -620,13 +639,13 @@ const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{t("close")}</Button>
         <Button variant="contained" color="primary">
           {mode === "buy"
-            ? "Contact Advertiser"
+            ? t("contact_advertiser")
             : mode === "rent"
-            ? "Schedule Viewing"
-            : "See Similar Properties"}
+            ? t("schedule_viewing")
+            : t("see_similar")}
         </Button>
       </DialogActions>
     </Dialog>
@@ -634,6 +653,7 @@ const PropertyDetailsDialog = ({ open, property, onClose, mode }) => {
 };
 
 function Properties() {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
@@ -1000,7 +1020,7 @@ function Properties() {
               },
             }}
           >
-            RENT
+            {t("rent")}
           </Button>
           <Button
             variant={mode === "buy" ? "contained" : "outlined"}
@@ -1023,7 +1043,7 @@ function Properties() {
               },
             }}
           >
-            BUY
+            {t("buy")}
           </Button>
           <Button
             variant={mode === "sold" ? "contained" : "outlined"}
@@ -1046,7 +1066,7 @@ function Properties() {
               },
             }}
           >
-            SOLD
+            {t("sold")}
           </Button>
         </Box>
       </Box>
@@ -1063,10 +1083,10 @@ function Properties() {
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
-          {mode === "rent" && "Properties for Rent"}
-          {mode === "buy" && "Properties for Sale"}
-          {mode === "sold" && "Recently Sold Properties"}
-          {!["rent", "buy", "sold"].includes(mode) && "All Properties"}
+          {mode === "rent" && t("properties_rent")}
+          {mode === "buy" && t("properties_sale")}
+          {mode === "sold" && t("properties_sold")}
+          {!["rent", "buy", "sold"].includes(mode) && t("properties_all")}
         </Typography>
       </Box>
 
@@ -1107,9 +1127,11 @@ function Properties() {
         <Box sx={{ mb: 2 }}>
           <Typography variant="body1">
             {filteredProperties.length === 0
-              ? "No properties match your search criteria"
-              : `Showing ${filteredProperties.length} ${
-                  filteredProperties.length === 1 ? "property" : "properties"
+              ? t("no_properties_found")
+              : `${t("showing")} ${filteredProperties.length} ${
+                  filteredProperties.length === 1
+                    ? t("property_singular")
+                    : t("property_plural")
                 }`}
           </Typography>
         </Box>
@@ -1143,17 +1165,18 @@ function Properties() {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            No properties match your search criteria
+            {t("no_properties_found")}
           </Typography>
+
           <Typography variant="body1" sx={{ mb: 2 }}>
-            Try adjusting your filters or search terms
+            {t("adjust_filters")}
           </Typography>
           <Button
             variant="contained"
             startIcon={<RefreshIcon />}
             onClick={resetFilters}
           >
-            Reset Filters
+            {t("reset_filters")}
           </Button>
         </Box>
       )}
