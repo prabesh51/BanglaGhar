@@ -118,7 +118,6 @@
   "location_and_features": "Location & Features",
   "images_description": "Images & Description",
   "property_title": "Property Title",
-  "property_type": "Property Type",
   "listing_type": "Listing Type",
   "monthly_rent": "Monthly Rent (৳)",
   "price": "Price (৳)",
@@ -126,8 +125,6 @@
   "city": "City",
   "state": "State",
   "zip_code": "ZIP Code",
-  "bedrooms": "Bedrooms",
-  "bathrooms": "Bathrooms",
   "area": "Area (sq.ft)",
   "features": "Features",
   "parking": "Parking",
@@ -164,5 +161,9 @@
   "commercial": "Commercial",
   "login_to_view_saved": "Please log in to view your saved properties.",
   "saved_properties": "Saved Properties",
-  "remove": "Remove"
+  "remove": "Remove",
+  "name": "Name",
+  "already_have_account": "Already have an account?",
+  "login": "Log in",
+  "signup_success": "Successfully signed up! Please verify your email with OTP."
 }

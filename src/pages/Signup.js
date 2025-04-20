@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useAuth } from "../pages/AuthContext"; 
+import { useAuth } from "../pages/AuthContext";
 
 const SignupPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: "#FFFFFF",
@@ -49,6 +50,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const Signup = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { signup } = useAuth(); // Use signup from AuthContext
   const [useremail, setUseremail] = useState("");
@@ -76,12 +78,11 @@ const Signup = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    validatePassword(newPassword); 
+    validatePassword(newPassword);
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
 
     try {
       await signup(useremail, username, password); // Call centralized signup
@@ -99,7 +100,8 @@ const Signup = () => {
   };
 
   // Check if password meets all requirements
-  const isPasswordValid = hasNumber && hasSpecial && hasUppercase && hasLowercase && hasMinLength;
+  const isPasswordValid =
+    hasNumber && hasSpecial && hasUppercase && hasLowercase && hasMinLength;
 
   return (
     <Container component="main" maxWidth="xs" sx={{ py: 8 }}>
@@ -113,7 +115,7 @@ const Signup = () => {
           variant="h4"
           sx={{ mb: 3, fontWeight: 700, color: "#2B7B8C" }}
         >
-          Sign Up
+          {t("sign_up")}
         </Typography>
 
         {error && (
@@ -130,7 +132,7 @@ const Signup = () => {
             margin="normal"
             required
             fullWidth
-            label="Email"
+            label={t("email")}
             autoFocus
             variant="outlined"
             value={useremail}
@@ -141,7 +143,7 @@ const Signup = () => {
             margin="normal"
             required
             fullWidth
-            label="Name"
+            label={t("name")}
             variant="outlined"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -151,7 +153,7 @@ const Signup = () => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t("password")}
             type="password"
             variant="outlined"
             value={password}
@@ -160,21 +162,20 @@ const Signup = () => {
             helperText={
               <Typography
                 variant="caption"
-                sx={{ 
+                sx={{
                   color: hasMinLength ? "green" : "#2B7B8C",
-                  lineHeight: 1.2
+                  lineHeight: 1.2,
                 }}
               >
-                  Must be 8 characters with number, special character, uppercase, and lowercase  
+                {t("password_requirement")}
               </Typography>
-              
             }
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            label="Confirm Password"
+            label={t("confirm_password")}
             type="password"
             variant="outlined"
             value={confirmPass}
@@ -182,14 +183,14 @@ const Signup = () => {
             sx={{ mb: 2 }}
           />
           <StyledButton type="submit" fullWidth variant="contained">
-            Sign Up
+            {t("sign_up")}
           </StyledButton>
         </Box>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Already have an account?{" "}
+          {t("already_have_account")}{" "}
           <Link to="/login" style={{ color: "#2B7B8C" }}>
-            Log in
+            {t("login")}
           </Link>
         </Typography>
       </SignupPaper>
@@ -205,7 +206,7 @@ const Signup = () => {
           severity="success"
           sx={{ borderRadius: "8px" }}
         >
-          Successfully signed up! Please verify your email with OTP.
+          {t("signup_success")}
         </Alert>
       </Snackbar>
     </Container>
