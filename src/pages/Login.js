@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useAuth } from "./AuthContext"; 
+import { useAuth } from "./AuthContext";
 
 const LoginPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: "#FFFFFF",
@@ -49,6 +50,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const Login = () => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const { login } = useAuth(); // Use the login function from AuthContext
   const [useremail, setUseremail] = useState(""); // Rename for clarity
@@ -86,7 +89,7 @@ const Login = () => {
           variant="h4"
           sx={{ mb: 3, fontWeight: 700, color: "#2B7B8C" }}
         >
-          Sign In
+          {t("sign_in")}
         </Typography>
 
         {error && (
@@ -103,7 +106,7 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            label="Email"
+            label={t("email")}
             autoFocus
             variant="outlined"
             value={useremail}
@@ -114,7 +117,7 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t("password")}
             type="password"
             variant="outlined"
             value={password}
@@ -123,20 +126,20 @@ const Login = () => {
           />
 
           <StyledButton type="submit" fullWidth variant="contained">
-            Sign In
+            {t("sign_in")}
           </StyledButton>
         </Box>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
           <Link to="/forgot-password" style={{ color: "#2B7B8C" }}>
-            Forgot Password?
+            {t("forgot_password")}
           </Link>
         </Typography>
 
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Don’t have an account?{" "}
+          {t("no_account")}{" "}
           <Link to="/signup" style={{ color: "#2B7B8C" }}>
-            Sign up
+            {t("sign_up")}
           </Link>
         </Typography>
       </LoginPaper>
@@ -152,7 +155,7 @@ const Login = () => {
           severity="success"
           sx={{ borderRadius: "8px" }}
         >
-          Logged in successfully!
+          {t("login_success")}
         </Alert>
       </Snackbar>
     </Container>
