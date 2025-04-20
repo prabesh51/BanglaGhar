@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Container,
@@ -50,6 +51,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const VerifyOtp = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {};
@@ -94,11 +96,11 @@ const VerifyOtp = () => {
           variant="h4"
           sx={{ mb: 3, fontWeight: 700, color: "#2B7B8C" }}
         >
-          Verify OTP
+          {t("verify_otp")}
         </Typography>
 
         <Typography variant="body1" sx={{ mb: 2 }}>
-          An OTP has been sent to {email}. Please enter it below.
+          {t("otp_sent_to", { email })}
         </Typography>
 
         {error && (
@@ -115,7 +117,7 @@ const VerifyOtp = () => {
             margin="normal"
             required
             fullWidth
-            label="Enter OTP"
+            label={t("enter_otp")}
             variant="outlined"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
@@ -123,7 +125,7 @@ const VerifyOtp = () => {
           />
 
           <StyledButton type="submit" fullWidth variant="contained">
-            Verify OTP
+            {t("verify_otp")}
           </StyledButton>
         </Box>
       </VerifyOtpPaper>
@@ -139,7 +141,7 @@ const VerifyOtp = () => {
           severity="success"
           sx={{ borderRadius: "8px" }}
         >
-          Email verified successfully! Redirecting to login...
+          {t("otp_success")}
         </Alert>
       </Snackbar>
     </Container>

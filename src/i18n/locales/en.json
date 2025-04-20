@@ -183,5 +183,9 @@
   "save": "Save",
   "old_password": "Old Password",
   "delete_warning": "Are you sure you want to delete your account? This action cannot be undone.",
-  "delete": "Delete"
+  "delete": "Delete",
+  "verify_otp": "Verify OTP",
+  "enter_otp": "Enter OTP",
+  "otp_sent_to": "An OTP has been sent to {{email}}. Please enter it below.",
+  "otp_success": "Email verified successfully! Redirecting to login..."
 }
