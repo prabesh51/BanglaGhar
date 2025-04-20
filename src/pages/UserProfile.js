@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Paper,
@@ -19,7 +20,6 @@ import {
   DialogActions,
   IconButton,
   Input,
-  
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
@@ -29,9 +29,9 @@ import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import {  CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { userPool } from "../aws/CognitoConfig";
-import { useAuth } from "../pages/AuthContext"; 
+import { useAuth } from "../pages/AuthContext";
 
 const ProfilePaper = styled(Paper)(({ theme }) => ({
   backgroundColor: "#FFFFFF",
@@ -68,14 +68,15 @@ const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   "&:hover": {
     backgroundColor: "#236C7D",
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(1),
-    fontSize: "0.95rem",
-  },
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(1),
+      fontSize: "0.95rem",
+    },
   },
 }));
 
 const UserProfile = () => {
+  const { t } = useTranslation();
   const { logout } = useAuth(); // Use logout from AuthContext
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -299,14 +300,19 @@ const UserProfile = () => {
   }
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ px: 2}}>
+    <Container component="main" maxWidth="sm" sx={{ px: 2 }}>
       <ProfilePaper elevation={3}>
         <Box sx={{ position: "relative" }}>
           <StyledAvatar src={profilePic}>
             {!profilePic && <PersonIcon fontSize="large" />}
           </StyledAvatar>
           <IconButton
-            sx={{ position: "absolute", bottom: 0, right: 0, backgroundColor: "#fff" }}
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              backgroundColor: "#fff",
+            }}
             component="label"
           >
             <PhotoCamera />
@@ -334,10 +340,14 @@ const UserProfile = () => {
                 <PersonIcon sx={{ color: "#2B7B8C" }} />
               </ListItemIcon>
               <ListItemText
-                primary="Name"
+                primary={t("name")}
                 secondary={userData.name}
                 primaryTypographyProps={{ fontWeight: 600, color: "#2B7B8C" }}
-                secondaryTypographyProps={{ fontSize: "1.1rem", color: "#000000", sx: {wordBreak: "break-word", overflowWrap: "break-word"}, }}
+                secondaryTypographyProps={{
+                  fontSize: "1.1rem",
+                  color: "#000000",
+                  sx: { wordBreak: "break-word", overflowWrap: "break-word" },
+                }}
               />
             </ListItem>
 
@@ -346,10 +356,14 @@ const UserProfile = () => {
                 <EmailIcon sx={{ color: "#2B7B8C" }} />
               </ListItemIcon>
               <ListItemText
-                primary="Email"
+                primary={t("email")}
                 secondary={userData.email}
                 primaryTypographyProps={{ fontWeight: 600, color: "#2B7B8C" }}
-                secondaryTypographyProps={{ fontSize: "1.1rem", color: "#000000", sx: {wordBreak: "break-word", overflowWrap: "break-word"}, }}
+                secondaryTypographyProps={{
+                  fontSize: "1.1rem",
+                  color: "#000000",
+                  sx: { wordBreak: "break-word", overflowWrap: "break-word" },
+                }}
               />
             </ListItem>
 
@@ -358,10 +372,14 @@ const UserProfile = () => {
                 <PersonIcon sx={{ color: "#2B7B8C" }} />
               </ListItemIcon>
               <ListItemText
-                primary="User ID"
+                primary={t("user_id")}
                 secondary={userData.sub}
                 primaryTypographyProps={{ fontWeight: 600, color: "#2B7B8C" }}
-                secondaryTypographyProps={{ fontSize: "1.1rem", color: "#000000", sx: { wordBreak: "break-word" } }}
+                secondaryTypographyProps={{
+                  fontSize: "1.1rem",
+                  color: "#000000",
+                  sx: { wordBreak: "break-word" },
+                }}
               />
             </ListItem>
 
@@ -370,10 +388,15 @@ const UserProfile = () => {
                 <EmailIcon sx={{ color: "#2B7B8C" }} />
               </ListItemIcon>
               <ListItemText
-                primary="Email Verified"
-                secondary={userData.email_verified === "true" ? "Yes" : "No"}
+                primary={t("email_verified")}
+                secondary={
+                  userData.email_verified === "true" ? t("yes") : t("no")
+                }
                 primaryTypographyProps={{ fontWeight: 600, color: "#2B7B8C" }}
-                secondaryTypographyProps={{ fontSize: "1.1rem", color: "#000000" }}
+                secondaryTypographyProps={{
+                  fontSize: "1.1rem",
+                  color: "#000000",
+                }}
               />
             </ListItem>
           </List>
@@ -384,7 +407,7 @@ const UserProfile = () => {
             onClick={handleEditOpen}
             fullWidth
           >
-            Edit Name
+            {t("edit_name")}
           </StyledButton>
 
           <StyledButton
@@ -393,7 +416,7 @@ const UserProfile = () => {
             onClick={handlePasswordOpen}
             fullWidth
           >
-            Change Password
+            {t("change_password")}
           </StyledButton>
 
           <StyledButton
@@ -402,7 +425,7 @@ const UserProfile = () => {
             onClick={toggleDarkMode}
             fullWidth
           >
-            Toggle {darkMode ? "Light" : "Dark"} Mode
+            {t("toggle")} {darkMode ? t("light") : t("dark")} {t("mode")}
           </StyledButton>
 
           <StyledButton
@@ -412,43 +435,43 @@ const UserProfile = () => {
             onClick={handleDeleteOpen}
             fullWidth
           >
-            Delete Account
+            {t("delete_account")}
           </StyledButton>
         </Box>
       </ProfilePaper>
 
       {/* Edit Name Dialog */}
       <Dialog open={editOpen} onClose={handleEditClose}>
-        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogTitle>{t("edit_profile")}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="Name"
+            label={t("name")}
             fullWidth
             variant="outlined"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
           <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Note: Email cannot be changed through this interface
+            {t("email_note")}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditClose}>Cancel</Button>
+          <Button onClick={handleEditClose}>{t("cancel")}</Button>
           <Button onClick={handleSaveChanges} variant="contained">
-            Save
+            {t("save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Change Password Dialog */}
       <Dialog open={passwordOpen} onClose={handlePasswordClose}>
-        <DialogTitle>Change Password</DialogTitle>
+        <DialogTitle>{t("change_password")}</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
-            label="Old Password"
+            label={t("old_password")}
             type="password"
             fullWidth
             variant="outlined"
@@ -457,7 +480,7 @@ const UserProfile = () => {
           />
           <TextField
             margin="dense"
-            label="New Password"
+            label={t("new_password")}
             type="password"
             fullWidth
             variant="outlined"
@@ -466,25 +489,27 @@ const UserProfile = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handlePasswordClose}>Cancel</Button>
+          <Button onClick={handlePasswordClose}>{t("cancel")}</Button>
           <Button onClick={handleChangePassword} variant="contained">
-            Save
+            {t("save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Delete Account Dialog */}
       <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-        <DialogTitle>Delete Account</DialogTitle>
+        <DialogTitle>{t("delete_account")}</DialogTitle>
         <DialogContent>
-          <Typography>
-            Are you sure you want to delete your account? This action cannot be undone.
-          </Typography>
+          <Typography>{t("delete_warning")}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteClose}>Cancel</Button>
-          <Button onClick={handleDeleteAccount} variant="contained" color="error">
-            Delete
+          <Button onClick={handleDeleteClose}>{t("cancel")}</Button>
+          <Button
+            onClick={handleDeleteAccount}
+            variant="contained"
+            color="error"
+          >
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
