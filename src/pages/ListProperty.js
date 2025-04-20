@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -106,15 +107,9 @@ const ImageUpload = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Step labels for stepper
-const steps = [
-  "Property Details",
-  "Location & Features",
-  "Images & Description",
-];
-
 // Main component
 const ListProperty = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, isLoggedIn } = useAuth();
   const [activeStep, setActiveStep] = useState(0);
@@ -124,6 +119,13 @@ const ListProperty = () => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  // Step labels for stepper
+  const steps = [
+    t("property_details"),
+    t("location_and_features"),
+    t("images_description"),
+  ];
   // Form state
   const [formData, setFormData] = useState({
     title: "",
@@ -411,7 +413,7 @@ const ListProperty = () => {
       />
       <PhotoCameraIcon sx={{ fontSize: 48, color: "#2B7B8C", mb: 2 }} />
       <Typography variant="body1" align="center" fontWeight={500}>
-        Click to upload property photos
+        {t("upload_photos_click")}
       </Typography>
       <Typography
         variant="body2"
@@ -419,13 +421,13 @@ const ListProperty = () => {
         color="textSecondary"
         sx={{ mt: 1 }}
       >
-        You can select multiple images
+        {t("upload_photos_hint")}
       </Typography>
 
       {formData.photos.length > 0 && (
         <Box sx={{ mt: 2, width: "100%" }}>
           <Typography variant="body2" fontWeight={600} sx={{ mb: 1 }}>
-            Selected photos ({formData.photos.length}):
+            {t("selected_photos")} ({formData.photos.length}):
           </Typography>
           <Grid container spacing={1}>
             {formData.photos.map((photo, index) => (
@@ -454,13 +456,13 @@ const ListProperty = () => {
 
   // Property type options
   const propertyTypes = [
-    "Apartment",
-    "House",
-    "Villa",
-    "Condo",
-    "Townhouse",
-    "Land",
-    "Commercial",
+    t("apartment"),
+    t("house"),
+    t("villa"),
+    t("condo"),
+    t("townhouse"),
+    t("land"),
+    t("commercial"),
   ];
 
   // Render step content
@@ -472,7 +474,7 @@ const ListProperty = () => {
             <Grid item xs={12}>
               <TextField
                 name="title"
-                label="Property Title"
+                label={t("property_title")}
                 fullWidth
                 value={formData.title}
                 onChange={handleChange}
@@ -495,13 +497,15 @@ const ListProperty = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth error={Boolean(errors.propertyType)}>
-                <InputLabel id="property-type-label">Property Type</InputLabel>
+                <InputLabel id="property-type-label">
+                  {t("property_type")}
+                </InputLabel>
                 <Select
                   labelId="property-type-label"
                   name="propertyType"
                   value={formData.propertyType}
                   onChange={handleChange}
-                  label="Property Type"
+                  label={t("property_type")}
                   sx={{ borderRadius: "10px" }}
                 >
                   {propertyTypes.map((type) => (
@@ -523,11 +527,11 @@ const ListProperty = () => {
                   name="listingType"
                   value={formData.listingType}
                   onChange={handleChange}
-                  label="Listing Type"
+                  label={t("listing_type")}
                   sx={{ borderRadius: "10px" }}
                 >
-                  <MenuItem value="sell">For Sale</MenuItem>
-                  <MenuItem value="rent">For Rent</MenuItem>
+                  <MenuItem value="sell">{t("for_sale")}</MenuItem>
+                  <MenuItem value="rent">{t("for_rent")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -536,8 +540,8 @@ const ListProperty = () => {
                 name="price"
                 label={
                   formData.listingType === "rent"
-                    ? "Monthly Rent (৳)"
-                    : "Price (৳)"
+                    ? t("monthly_rent")
+                    : t("price")
                 }
                 fullWidth
                 type="number"
@@ -568,7 +572,7 @@ const ListProperty = () => {
             <Grid item xs={12}>
               <TextField
                 name="address"
-                label="Address"
+                label={t("address")}
                 fullWidth
                 value={formData.address}
                 onChange={handleChange}
@@ -592,7 +596,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="city"
-                label="City"
+                label={t("city")}
                 fullWidth
                 value={formData.city}
                 onChange={handleChange}
@@ -609,7 +613,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="state"
-                label="State"
+                label={t("state")}
                 fullWidth
                 value={formData.state}
                 onChange={handleChange}
@@ -626,7 +630,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="zipCode"
-                label="ZIP Code"
+                label={t("zip_code")}
                 fullWidth
                 value={formData.zipCode}
                 onChange={handleChange}
@@ -646,7 +650,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="bedrooms"
-                label="Bedrooms"
+                label={t("bedrooms")}
                 fullWidth
                 type="number"
                 value={formData.bedrooms}
@@ -670,7 +674,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="bathrooms"
-                label="Bathrooms"
+                label={t("bathrooms")}
                 fullWidth
                 type="number"
                 value={formData.bathrooms}
@@ -694,7 +698,7 @@ const ListProperty = () => {
             <Grid item xs={12} md={4}>
               <TextField
                 name="area"
-                label="Area (sq.ft)"
+                label={t("area")}
                 fullWidth
                 value={formData.area}
                 onChange={handleChange}
@@ -715,7 +719,7 @@ const ListProperty = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <SectionTitle variant="h6">Features</SectionTitle>
+              <SectionTitle variant="h6">{t("features")}</SectionTitle>
               <Grid container spacing={2}>
                 <Grid item xs={6} md={4}>
                   <FormControlLabel
@@ -726,7 +730,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Parking"
+                    label={t("parking")}
                   />
                 </Grid>
                 <Grid item xs={6} md={4}>
@@ -738,7 +742,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Garden"
+                    label={t("garden")} // better to put lift instead of this
                   />
                 </Grid>
                 <Grid item xs={6} md={4}>
@@ -750,7 +754,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Air Conditioning"
+                    label={t("air_conditioning")}
                   />
                 </Grid>
                 <Grid item xs={6} md={4}>
@@ -762,7 +766,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Furnished"
+                    label={t("furnished")} // no need! as all the house in bangladesh comes unfurnished
                   />
                 </Grid>
                 <Grid item xs={6} md={4}>
@@ -774,7 +778,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Swimming Pool"
+                    label={t("swimming_pool")} // optional
                   />
                 </Grid>
               </Grid>
@@ -786,20 +790,26 @@ const ListProperty = () => {
           <Grid container spacing={3}>
             {/* Nearby amenities questions */}
             <Grid item xs={12}>
-              <SectionTitle variant="h6">Nearby Amenities</SectionTitle>
+              <SectionTitle variant="h6">{t("nearby_amenities")}</SectionTitle>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={formData.nearbyAmenities.educationalInstitutions === "Yes"}
+                        checked={
+                          formData.nearbyAmenities.educationalInstitutions ===
+                          "Yes"
+                        }
                         onChange={(e) =>
-                          handleNearbyAmenityChange("educationalInstitutions", e.target.checked)
+                          handleNearbyAmenityChange(
+                            "educationalInstitutions",
+                            e.target.checked
+                          )
                         }
                         color="primary"
                       />
                     }
-                    label="Nearby Educational Institutions"
+                    label={t("educational_institutions")}
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -808,12 +818,15 @@ const ListProperty = () => {
                       <Switch
                         checked={formData.nearbyAmenities.hospital === "Yes"}
                         onChange={(e) =>
-                          handleNearbyAmenityChange("hospital", e.target.checked)
+                          handleNearbyAmenityChange(
+                            "hospital",
+                            e.target.checked
+                          )
                         }
                         color="primary"
                       />
                     }
-                    label="Nearby Hospital"
+                    label={t("nearby_hospital")}
                   />
                 </Grid>
                 <Grid item xs={12} md={4}>
@@ -827,7 +840,7 @@ const ListProperty = () => {
                         color="primary"
                       />
                     }
-                    label="Nearby Market"
+                    label={t("nearby_market")}
                   />
                 </Grid>
               </Grid>
@@ -843,12 +856,12 @@ const ListProperty = () => {
                   startIcon={<DescriptionIcon />}
                   sx={{ mb: 1 }}
                 >
-                  {isGenerating ? "Generating..." : "Generate with AI"}
+                  {isGenerating ? "Generating..." : t("generate_ai")}
                 </StyledButton>
               </Box>
               <TextField
                 name="description"
-                label="Property Description"
+                label={t("property_description")}
                 multiline
                 rows={6}
                 fullWidth
@@ -857,7 +870,7 @@ const ListProperty = () => {
                 error={Boolean(errors.description)}
                 helperText={errors.description}
                 variant="outlined"
-                placeholder="Describe your property in detail. Include special features, recent renovations, nearby amenities, etc."
+                placeholder={t("description_placeholder")}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment
@@ -888,7 +901,7 @@ const ListProperty = () => {
                       setAiGeneratedDescription("");
                     }}
                   >
-                    Use this description
+                    {t("use_this_description")}
                   </Button>
                 </Box>
               )}
@@ -897,25 +910,33 @@ const ListProperty = () => {
             {/* Translate to Bangla */}
             {aiGeneratedDescription && (
               <Grid item xs={12}>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <StyledButton
                     variant="outlined"
                     onClick={translateToBangla}
                     disabled={!aiGeneratedDescription}
                     sx={{ mb: 1 }}
                   >
-                    Translate to Bangla
+                    {t("translate_to_bn")}
                   </StyledButton>
                   {banglaDescription && (
                     <FormControlLabel
                       control={
                         <Switch
                           checked={useBanglaDescription}
-                          onChange={(e) => setUseBanglaDescription(e.target.checked)}
+                          onChange={(e) =>
+                            setUseBanglaDescription(e.target.checked)
+                          }
                           color="primary"
                         />
                       }
-                      label="Use Bangla Description"
+                      label={t("use_bangla")}
                     />
                   )}
                 </Box>
@@ -926,7 +947,7 @@ const ListProperty = () => {
             {banglaDescription && (
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  Bangla Description:
+                  {t("bangla_description")}
                 </Typography>
                 <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
                   {banglaDescription}
@@ -935,7 +956,7 @@ const ListProperty = () => {
             )}
             {formData.title && formData.price && (
               <Grid item xs={12}>
-                <SectionTitle variant="h6">Preview</SectionTitle>
+                <SectionTitle variant="h6">{t("preview")}</SectionTitle>
                 <PreviewCard>
                   <CardContent>
                     <Typography
@@ -998,7 +1019,7 @@ const ListProperty = () => {
       <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
         <HomeWorkIcon sx={{ fontSize: 36, mr: 2, color: "#2B7B8C" }} />
         <Typography variant="h4" fontWeight={700} color="#2B7B8C">
-          List Your Property
+          {t("list_your_property")}
         </Typography>
       </Box>
 
@@ -1007,11 +1028,10 @@ const ListProperty = () => {
           <Box sx={{ textAlign: "center", py: 4 }}>
             <SellIcon sx={{ fontSize: 64, color: "#2B7B8C", mb: 3 }} />
             <Typography variant="h5" gutterBottom fontWeight={600}>
-              Property Submitted Successfully!
+              {t("property_success")}
             </Typography>
             <Typography variant="body1" paragraph color="text.secondary">
-              Your property has been submitted for review. Our team will contact
-              you shortly.
+              {t("property_pending_review")}
             </Typography>
             <StyledButton
               variant="contained"
@@ -1019,7 +1039,7 @@ const ListProperty = () => {
               onClick={() => navigate("/")}
               sx={{ mt: 2 }}
             >
-              Return to Home
+              {t("return_home")}
             </StyledButton>
           </Box>
         </StyledPaper>
@@ -1061,8 +1081,8 @@ const ListProperty = () => {
                 onClick={handleNext}
               >
                 {activeStep === steps.length - 1
-                  ? "Submit Property"
-                  : "Continue"}
+                  ? t("submit_property")
+                  : t("continue")}
               </StyledButton>
             </Box>
           </Box>
@@ -1083,7 +1103,7 @@ const ListProperty = () => {
             boxShadow: "0 4px 12px rgba(43, 123, 140, 0.2)",
           }}
         >
-          Your property has been submitted successfully!
+          {t("property_submitted_success")}
         </Alert>
       </Snackbar>
     </Container>

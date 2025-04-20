@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Container,
@@ -13,6 +14,7 @@ import { useAuth } from "./AuthContext";
 import axios from "axios";
 
 const Saved = () => {
+  const { t } = useTranslation();
   const { isLoggedIn, user } = useAuth();
   const [savedProperties, setSavedProperties] = useState([]);
 
@@ -30,7 +32,7 @@ const Saved = () => {
     return (
       <Container>
         <Typography variant="h5" sx={{ mt: 4 }}>
-          Please log in to view your saved properties.
+          {t("login_to_view_saved")}
         </Typography>
       </Container>
     );
@@ -50,7 +52,7 @@ const Saved = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Saved Properties
+        {t("saved_properties")}
       </Typography>
       <Grid container spacing={3}>
         {savedProperties.map((property) => (
@@ -82,7 +84,7 @@ const Saved = () => {
                     (window.location.href = `/properties/${property._id}`)
                   }
                 >
-                  View Details
+                  {t("view_details")}
                 </Button>
                 <Button //remove from saved properties
                   variant="outlined"
@@ -90,7 +92,7 @@ const Saved = () => {
                   sx={{ mt: 2, ml: 1 }}
                   onClick={() => removeFromWishlist(property._id)}
                 >
-                  Remove
+                  {t("remove")}
                 </Button>
               </CardContent>
             </Card>
