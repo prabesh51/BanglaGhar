@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
@@ -51,6 +52,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const ForgotPassword = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -86,7 +88,7 @@ const ForgotPassword = () => {
   const validateUser = async (email) => {
     try {
       const response = await axios.post(
-        process.env.REACT_APP_APIGATEWAY_URL,// API Gateway invoke URL 
+        process.env.REACT_APP_APIGATEWAY_URL, // API Gateway invoke URL
         { email },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -123,7 +125,9 @@ const ForgotPassword = () => {
       }
 
       if (!verified) {
-        setError("Your account is not verified. Please verify your email first.");
+        setError(
+          "Your account is not verified. Please verify your email first."
+        );
         return;
       }
 
@@ -143,11 +147,15 @@ const ForgotPassword = () => {
         },
         onFailure: (err) => {
           console.error("Error during forgotPassword:", err);
-          setError(err.message || "Failed to send verification code. Please try again.");
+          setError(
+            err.message || "Failed to send verification code. Please try again."
+          );
         },
       });
     } catch (err) {
-      setError(err.message || "An error occurred during validation. Please try again.");
+      setError(
+        err.message || "An error occurred during validation. Please try again."
+      );
     }
   };
 
@@ -160,7 +168,13 @@ const ForgotPassword = () => {
       return;
     }
 
-    if (!hasNumber || !hasSpecial || !hasUppercase || !hasLowercase || !hasMinLength) {
+    if (
+      !hasNumber ||
+      !hasSpecial ||
+      !hasUppercase ||
+      !hasLowercase ||
+      !hasMinLength
+    ) {
       setError("Password doesn't meet all requirements!");
       return;
     }
@@ -192,7 +206,8 @@ const ForgotPassword = () => {
     setOpenSnackbar(false);
   };
 
-  const isPasswordValid = hasNumber && hasSpecial && hasUppercase && hasLowercase && hasMinLength;
+  const isPasswordValid =
+    hasNumber && hasSpecial && hasUppercase && hasLowercase && hasMinLength;
 
   return (
     <Container component="main" maxWidth="xs" sx={{ py: 8 }}>
@@ -206,7 +221,7 @@ const ForgotPassword = () => {
           variant="h4"
           sx={{ mb: 3, fontWeight: 700, color: "#2B7B8C" }}
         >
-          {step === 1 ? "Forgot Password" : "Reset Password"}
+          {step === 1 ? t("forgot_password") : t("reset_password")}
         </Typography>
 
         {error && (
@@ -229,7 +244,7 @@ const ForgotPassword = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="Email"
+                label={t("email")}
                 autoFocus
                 variant="outlined"
                 value={email}
@@ -237,7 +252,7 @@ const ForgotPassword = () => {
                 sx={{ mb: 2 }}
               />
               <StyledButton type="submit" fullWidth variant="contained">
-                Send Verification Code
+                {t("send_verification_code")}
               </StyledButton>
             </>
           )}
@@ -251,7 +266,7 @@ const ForgotPassword = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="Verification Code"
+                label={t("verification_code")}
                 variant="outlined"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
@@ -261,7 +276,7 @@ const ForgotPassword = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="New Password"
+                label={t("new_password")}
                 type="password"
                 variant="outlined"
                 value={newPassword}
@@ -275,7 +290,7 @@ const ForgotPassword = () => {
                       lineHeight: 1.2,
                     }}
                   >
-                    Must be 8 characters with number, special character, uppercase, and lowercase
+                    {t("password_requirement")}
                   </Typography>
                 }
               />
@@ -283,7 +298,7 @@ const ForgotPassword = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="Confirm Password"
+                label={t("confirm_password")}
                 type="password"
                 variant="outlined"
                 value={confirmPassword}
@@ -291,7 +306,7 @@ const ForgotPassword = () => {
                 sx={{ mb: 2 }}
               />
               <StyledButton type="submit" fullWidth variant="contained">
-                Reset Password
+                {t("reset_password")}
               </StyledButton>
             </>
           )}
@@ -299,7 +314,7 @@ const ForgotPassword = () => {
 
         <Typography variant="body2" sx={{ mt: 2 }}>
           <Link to="/login" style={{ color: "#2B7B8C" }}>
-            Back to Sign In
+            {t("back_to_sign_in")}
           </Link>
         </Typography>
       </ForgotPasswordPaper>
@@ -315,7 +330,7 @@ const ForgotPassword = () => {
           severity="success"
           sx={{ borderRadius: "8px" }}
         >
-          Password reset successfully! Redirecting to login...
+          {t("password_reset_success")} Redirecting to login...
         </Alert>
       </Snackbar>
     </Container>
