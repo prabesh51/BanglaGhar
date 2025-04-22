@@ -617,7 +617,7 @@ const PropertyDetailPage = () => {
               <Box sx={{ mt: "auto", pt: 2 }}>
                 <Divider sx={{ mb: 2 }} />
                 <Button variant="contained" fullWidth onClick={() => setChatOpen(true)}>
-                  Contact Owner/Agent
+                  Contact Advertiser
                 </Button>
                 &nbsp;
                 {/* TODO: Add actual contact display/button logic */}
