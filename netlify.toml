@@ -1,0 +1,24 @@
+# netlify.toml (in project root)
+
+[build]
+  # Directory containing the backend code and package.json
+  base = "server"
+  # Directory where Netlify Functions are located (relative to base)
+  functions = "netlify/functions"
+  # Build command to run within the 'base' directory
+  command = "npm install"
+  # Directory to publish (can be omitted if only deploying functions, but good practice)
+  # publish = "server/public" # Or wherever static build output might go if needed
+
+# Redirects all requests starting with /api/ to the serverless function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat" # Ensure 'api' matches your handler filename (api.js)
+  status = 200 # Use 200 for rewrites (acts like a proxy)
+  force = true # Ensure this rule takes precedence
+
+# Optional: Redirect root path if needed
+# [[redirects]]
+#  from = "/"
+#  to = "/.netlify/functions/api"
+#  status = 200
