@@ -29,7 +29,6 @@ import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import { useTranslation } from "react-i18next";
 // Import the UploadIdModal
 import UploadIdModal from "../../features/profile/components/UploadIdModal"; // Adjust path
-import "./Navbar.css";
 
 // --- Styling Components (Keep existing HideOnScroll, NavbarContainer) ---
 function HideOnScroll(props) {
@@ -148,8 +147,12 @@ const Navbar = () => {
     <>
       <HideOnScroll>
         <NavbarContainer position="sticky">
-          <Container maxWidth="xl">
-            <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+          <Container maxWidth="lg" disableGutters>
+            <Toolbar disableGutters sx={{ 
+              px: { xs: 2, sm: 4, md: 6, lg: 8 }, 
+              py: { xs: 1, sm: 2 },
+              justifyContent: "space-between",
+             }}>
               {/* Logo */}
               <Typography
                 variant="h5"

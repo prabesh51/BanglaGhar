@@ -106,7 +106,8 @@ const Footer = () => {
         </IconButton>
       </Box>
 
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" disableGutters>
+        <Box sx={{ px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
         {/* Main Footer Content */}
         <Grid container spacing={4}>
           {/* Logo and About Section */}
@@ -550,6 +551,7 @@ const Footer = () => {
               Terms of Service {/* <-- Kept as is, no key */}
             </Link>
           </Box>
+        </Box>
         </Box>
       </Container>
     </Box>

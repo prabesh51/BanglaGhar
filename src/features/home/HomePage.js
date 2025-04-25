@@ -1,3 +1,4 @@
+// src/features/home/HomePage.js
 import React from "react";
 import { Box } from "@mui/material";
 import HeroSection from "./components/HeroSection";
@@ -11,27 +12,35 @@ import CallToAction from "./components/CallToAction";
  *
  * Acts as the main container for the home page, arranging different sections.
  * It imports and renders specialized section components.
+ * Uses CSS classes defined in HomePage.css for all spacing, backgrounds, and responsive behavior.
  */
 const HomePage = () => {
   return (
-    <Box>
-      {/* Render the Hero section */}
-      <HeroSection />
+    <Box className="home-page">
+      {/* Hero Section: gradient background, headline, subtitle, and CTA buttons */}
+      <Box className="section hero-section">
+        <HeroSection />
+      </Box>
 
-      {/* Render the Search Bar section */}
-      {/* Note: SearchBar now includes the map dialog logic triggered by the location field */}
-      <HomeSearchBar />
+      {/* Search Bar Section: overlays hero, includes search inputs and map dialog toggle */}
+      <Box className="section search-bar-section">
+        <HomeSearchBar />
+      </Box>
 
-      {/* Render the Featured Properties section */}
-      {/* Note: FeaturedProperties now handles its own data fetching */}
-      <FeaturedProperties />
+      {/* Featured Properties Section: handpicked property cards in a responsive grid */}
+      <Box className="section featured-properties-section">
+        <FeaturedProperties />
+      </Box>
 
-      {/* Render the Map Preview section */}
-      {/* Note: This section might need updates after BangladeshMap itself is refactored */}
-      <HomeMapPreview />
+      {/* Map Preview Section: mini-map with sample pins and 'Open Full Map' button */}
+      <Box className="section map-preview-section">
+        <HomeMapPreview />
+      </Box>
 
-      {/* Render the Call To Action section */}
-      <CallToAction />
+      {/* Call To Action Section: final prompt encouraging users to contact */}
+      <Box className="section cta-section">
+        <CallToAction />
+      </Box>
     </Box>
   );
 };
