@@ -29,6 +29,7 @@ import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import { useTranslation } from "react-i18next";
 // Import the UploadIdModal
 import UploadIdModal from "../../features/profile/components/UploadIdModal"; // Adjust path
+import "./Navbar.css";
 
 // --- Styling Components (Keep existing HideOnScroll, NavbarContainer) ---
 function HideOnScroll(props) {
