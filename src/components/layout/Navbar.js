@@ -232,10 +232,10 @@ const Navbar = () => {
         handleDrawerToggle={handleDrawerToggle}
         navLinks={navLinks}
         activeLink={activeLink}
-        // Pass the combined handler
         handleNavigate={handleNavigate}
-        // Pass the specific list property handler for direct use
         onListPropertyClick={handleListPropertyClick}
+        isLoggedIn={isLoggedIn} // Pass the login state
+        handleLogout={handleLogout} // Pass the logout handler
       />
 
       {/* Render the Upload ID Modal */}

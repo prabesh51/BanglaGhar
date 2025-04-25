@@ -24,8 +24,9 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import SellIcon from "@mui/icons-material/Sell";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useTranslation } from "react-i18next";
-// No longer need useAuth here
 
 // --- Styling (Keep DrawerItem style) ---
 const DrawerItem = styled(ListItemButton)(({ theme, selected }) => ({
@@ -53,7 +54,7 @@ const DrawerItem = styled(ListItemButton)(({ theme, selected }) => ({
 }));
 // --- End Styling ---
 
-// Accept onListPropertyClick prop from Navbar
+// Accept onListPropertyClick, isLoggedIn, and handleLogout props from Navbar
 const MobileDrawer = ({
   mobileOpen,
   handleDrawerToggle,
@@ -61,6 +62,8 @@ const MobileDrawer = ({
   activeLink,
   handleNavigate,
   onListPropertyClick,
+  isLoggedIn,
+  handleLogout,
 }) => {
   const drawerWidth = 260;
   const location = useLocation();
@@ -191,6 +194,29 @@ const MobileDrawer = ({
             <ListItemText primary={t("list_property")} />
           </DrawerItem>
         </ListItem>
+
+        {/* Account Options */}
+        <Divider sx={{ my: 1 }} />
+        {isLoggedIn ? (
+          <ListItem button onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={t("Logout")} />
+          </ListItem>
+        ) : (
+          <ListItem
+            button
+            component={RouterLink}
+            to="/login"
+            onClick={handleDrawerToggle}
+          >
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={t("Login")} />
+          </ListItem>
+        )}
       </List>
     </Drawer>
   );
